@@ -1,0 +1,18 @@
+*{
+    padding: 0;
+    border: 0;
+    text-align: center;
+}
+
+body {
+    background-color: rgb(193,216,240);
+}
+
+button {
+    width: 250px;
+    height: 80px;
+    font-size: 20px;
+    background-color: rgb(70,99,172);
+    color: rgb(210,222,235);
+    border-radius: 5px;
+}
