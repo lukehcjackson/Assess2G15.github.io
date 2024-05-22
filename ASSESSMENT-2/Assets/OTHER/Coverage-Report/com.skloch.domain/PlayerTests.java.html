@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerTests.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">com.skloch.domain</a> &gt; <span class="el_source">PlayerTests.java</span></div><h1>PlayerTests.java</h1><pre class="source lang-java linenums">package com.skloch.domain;
+
+import com.skloch.game.Player;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static org.junit.Assert.*;
+
+/**
+ * //NEW//-TEAM15-IMPLEMENTATION: class added version 1.1
+ * This class contains unit tests for the Player class
+ * It verifies whether the player is able to be controlled correctly by the user
+ */
+@RunWith(org.example.GdxTestRunner.class)
+<span class="fc" id="L16">public class PlayerTests {</span>
+    Player player;
+    @Before
+    public void setUp(){
+<span class="fc" id="L20">        player = new Player(&quot;avatar1&quot;);</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * Tests if the player can move right
+     */
+    @Test
+    public void testPlayerMoveRight(){
+<span class="fc" id="L28">        player.testRight = true;</span>
+<span class="fc" id="L29">        float posX = player.getX();</span>
+<span class="fc" id="L30">        player.move(5f);</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">        assertTrue(player.getX() &gt; posX);</span>
+<span class="fc" id="L32">    }</span>
+
+    /**
+     * Tests if the player can move left
+     */
+    @Test
+    public void testPlayerMoveLeft(){
+<span class="fc" id="L39">        player.testLeft = true;</span>
+<span class="fc" id="L40">        float posX = player.getX();</span>
+<span class="fc" id="L41">        player.move(5f);</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        assertTrue(player.getX() &lt; posX);</span>
+<span class="fc" id="L43">    }</span>
+
+    /**
+     * Tests if the player can move up
+     */
+    @Test
+    public void testPlayerMoveUp(){
+<span class="fc" id="L50">        player.testUp = true;</span>
+<span class="fc" id="L51">        float posY = player.getY();</span>
+<span class="fc" id="L52">        player.move(5f);</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        assertTrue(player.getY() &gt; posY);</span>
+<span class="fc" id="L54">    }</span>
+
+    /**
+     * Tests if the player can move down
+     */
+    @Test
+    public void testPlayerMoveDown(){
+<span class="fc" id="L61">        player.testDown = true;</span>
+<span class="fc" id="L62">        float posY = player.getY();</span>
+<span class="fc" id="L63">        player.move(5f);</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        assertTrue(player.getY() &lt; posY);</span>
+<span class="fc" id="L65">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

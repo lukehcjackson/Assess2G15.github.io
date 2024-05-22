@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AchievementsTests.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">com.skloch.domain</a> &gt; <span class="el_source">AchievementsTests.java</span></div><h1>AchievementsTests.java</h1><pre class="source lang-java linenums">package com.skloch.domain;
+
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+/**
+ * //NEW//-TEAM15-IMPLEMENTATION: class added version 1.1
+ * This class contains unit tests for the GameOverHelper class, that itself abstracts the logic in GameOverScreen
+ * for the streaks in the game.
+ * It verifies the correct classification of achievements and the calculation of bonus streaks.
+ */
+<span class="fc" id="L12">public class AchievementsTests {</span>
+
+    /**
+     * Tests if a player is classified as a BookWorm when enough hours have been studied.
+     */
+    @Test
+    public void canClassifyAsBookWormWhenEnoughHoursHaveBeenStudied() {
+<span class="fc" id="L19">        GameOverHelper gameOverHelper = new GameOverHelper(8, 0, 0);</span>
+<span class="fc" id="L20">        assertTrue(&quot;It should have been classified as a BookWorm&quot;, gameOverHelper.isBookWorm());</span>
+<span class="fc" id="L21">    }</span>
+    /**
+     * Tests if a player is not classified as a BookWorm when they have not studied enough.
+     */
+    @Test
+    public void cannotClassifyAsBookWormWhenNotEnoughHoursHaveBeenStudied() {
+<span class="fc" id="L27">        GameOverHelper gameOverHelper = new GameOverHelper(5, 0, 0);</span>
+<span class="fc" id="L28">        assertFalse(&quot;It shouldn't have been classified as a BookWorm&quot;, gameOverHelper.isBookWorm());</span>
+<span class="fc" id="L29">    }</span>
+
+    /**
+     * Tests if a player is classified as Best Fisher when enough fish have been caught
+     * to classify as a streak, greater than 5.
+     */
+
+    @Test
+    public void canClassifyAsBestFisherWhenEnoughFishHaveBeenCaught() {
+<span class="fc" id="L38">        GameOverHelper gameOverHelper = new GameOverHelper(0, 5, 0);</span>
+<span class="fc" id="L39">        assertTrue(&quot;It should have been classified as Best Fisher&quot;, gameOverHelper.isBestFisher());</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * Tests if a player is not classified as Best Fisher when they have not fished enough
+     * in the game
+     */
+
+    @Test
+    public void cannotClassifyAsBestFisherWhenNotEnoughFishHaveBeenCaught() {
+<span class="fc" id="L49">        GameOverHelper gameOverHelper = new GameOverHelper(0, 3, 0);</span>
+<span class="fc" id="L50">        assertFalse(&quot;It shouldn't have been classified as Best Fisher&quot;, gameOverHelper.isBestFisher());</span>
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * Tests if a player is classified as Duck Duck Go when enough ducks have been fed, greater than 5.
+     */
+
+    @Test
+    public void canClassifyAsDuckDuckGoWhenEnoughDucksHaveBeenFed() {
+<span class="fc" id="L59">        GameOverHelper gameOverHelper = new GameOverHelper(0, 0, 5);</span>
+<span class="fc" id="L60">        assertTrue(&quot;It should have been classified as Duck Duck Go&quot;, gameOverHelper.isDuckDuckGo());</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Tests if a player is not classified as Duck Duck Go when they have not fed enough fish.
+     */
+
+    @Test
+    public void cannotClassifyAsDuckDuckGoWhenNotEnoughDucksHaveBeenFed() {
+<span class="fc" id="L69">        GameOverHelper gameOverHelper = new GameOverHelper(0, 0, 3);</span>
+<span class="fc" id="L70">        assertFalse(&quot;It shouldn't have been classified as Duck Duck Go&quot;, gameOverHelper.isDuckDuckGo());</span>
+<span class="fc" id="L71">    }</span>
+
+    /**
+     * Tests the calculation of total bonus streaks when multiple achievements are met.
+     */
+
+    @Test
+    public void calculateTotalBonusStreaks() {
+<span class="fc" id="L79">        GameOverHelper gameOverHelper = new GameOverHelper(8, 5, 5);</span>
+<span class="fc" id="L80">        assertEquals(&quot;The total bonus streaks should be 15&quot;, 15, gameOverHelper.calculateBonusStreak());</span>
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Tests the calculation of total bonus streaks when no achievements are met.
+     */
+
+    @Test
+    public void calculateTotalBonusStreaksWhenNoAchievements() {
+<span class="fc" id="L89">        GameOverHelper gameOverHelper = new GameOverHelper(6, 3, 2);</span>
+<span class="fc" id="L90">        assertEquals(&quot;The total bonus streaks should be 0&quot;, 0, gameOverHelper.calculateBonusStreak());</span>
+<span class="fc" id="L91">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

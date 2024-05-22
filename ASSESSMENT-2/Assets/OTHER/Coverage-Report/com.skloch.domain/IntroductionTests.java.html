@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IntroductionTests.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">com.skloch.domain</a> &gt; <span class="el_source">IntroductionTests.java</span></div><h1>IntroductionTests.java</h1><pre class="source lang-java linenums">package com.skloch.domain;
+import com.skloch.game.HustleGame;
+import com.skloch.game.MenuScreen;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static org.junit.Assert.*;
+@RunWith(org.example.GdxTestRunner.class)
+<span class="fc" id="L11">public class IntroductionTests {</span>
+    /**
+     * //NEW//-TEAM15-IMPLEMENTATION: class added version 1.1
+     * This class contains unit tests for the tutorial
+     * It verifies whether the file correctly formats the string for the tutorial
+     */
+
+    /**
+     * Tests whether the string collected from the file is the same as the string wanted
+     */
+    @Test
+    public void correctTutorialString(){
+<span class="fc" id="L23">        HustleGame game = new HustleGame(1920, 1080);</span>
+<span class="fc" id="L24">        game.gameTest = true;</span>
+<span class="fc" id="L25">        game.create();</span>
+
+<span class="fc" id="L27">        MenuScreen menu = new MenuScreen(game);</span>
+
+<span class="fc" id="L29">        String expectedText = &quot;Welcome to Heslington! You are a student at the university of York and your first big exam is fast approaching, but you haven't studied yet at all!\n\nOver the next 7 days you will need to manage studying, eating, sleeping and relaxing.\n\nYou can study in the Computer Science building, eat in the Ron Cooke Hub, meet friends in the Piazza, and sleep in your accomodation building.\n\nGood luck with your exam!\n\nWASD or Arrow Keys to Move\nE to Interact\nEsc to Pause&quot;;</span>
+
+        //Remove line seperators from the tutorial text
+<span class="fc" id="L32">        String tutorialText = menu.game.tutorialText.replaceAll(&quot;\\r\\n&quot;, &quot;\n&quot;).replaceAll(&quot;\\r&quot;, &quot;\n&quot;);</span>
+<span class="fc" id="L33">        Assert.assertEquals(expectedText, tutorialText);</span>
+<span class="fc" id="L34">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

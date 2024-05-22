@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EventManagerTests.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">com.skloch.domain</a> &gt; <span class="el_source">EventManagerTests.java</span></div><h1>EventManagerTests.java</h1><pre class="source lang-java linenums">package com.skloch.domain;
+
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.skloch.game.DialogueBox;
+import com.skloch.game.EventManager;
+import com.skloch.game.GameScreen;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatcher;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+
+/**
+ * //NEW//-TEAM15-IMPLEMENTATION: class added version 1.1
+ * This class contains unit tests for the EventManager class.
+ * It verifies the correct handling of various game locations and confirms that it
+ * is possible to interact with them.
+ */
+
+<span class="fc" id="L26">public class EventManagerTests {</span>
+
+    private GameScreen gameScreen;
+
+    /**
+     * Sets up the test environment by initializing the GameScreen instance and its components.
+     */
+
+    @Before
+    public void setUp() {
+<span class="fc" id="L36">        gameScreen = mock(GameScreen.class);</span>
+<span class="fc" id="L37">        gameScreen.dialogueBox = mock(DialogueBox.class);</span>
+<span class="fc" id="L38">        gameScreen.blackScreen = mock(Image.class);</span>
+<span class="fc" id="L39">    }</span>
+
+    /**
+     * Tests if the player can choose to catch up on studies.
+     * Verifies the effects on energy, study hours, and game state.
+     */
+
+    @Test
+    public void canChooseToCatchUpInStudies() {
+<span class="fc" id="L48">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L49">        int currentGameDay = 1; // Monday=1</span>
+<span class="fc" id="L50">        when(gameScreen.getDay()).thenReturn(currentGameDay);</span>
+<span class="fc" id="L51">        int hours = 2;</span>
+<span class="fc" id="L52">        int expectedEnergy = hours * eventManager.activityEnergies.get(&quot;studying&quot;);</span>
+<span class="fc" id="L53">        int expectedPassTime = hours * 60;</span>
+<span class="fc" id="L54">        eventManager.setHours(hours);</span>
+<span class="fc" id="L55">        gameScreen.daysStudied = new int[]{0,0,0,0,0,0,0};</span>
+<span class="fc" id="L56">        eventManager.event(&quot;catch_up-1&quot;);</span>
+<span class="fc" id="L57">        verify(gameScreen.dialogueBox).setText(String.format(&quot;You studied for %s hours!\nYou lost %d energy&quot;, hours, expectedEnergy));</span>
+
+<span class="fc" id="L59">        verify(gameScreen).decreaseEnergy(expectedEnergy);</span>
+<span class="fc" id="L60">        verify(gameScreen).addStudyHours(hours);</span>
+<span class="fc" id="L61">        assertEquals(hours, gameScreen.daysStudied[0]);</span>
+<span class="fc" id="L62">        assertTrue(gameScreen.catchUp);</span>
+<span class="fc" id="L63">        verify(gameScreen).passTime(expectedPassTime);</span>
+
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Tests if the player can choose not to catch up on studies.
+     * Verifies the effects on energy, study hours, and game state.
+     */
+
+    @Test
+    public void canChooseNotToCatchUpInStudies() {
+<span class="fc" id="L74">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L75">        int currentGameDay = 1; // Monday=1</span>
+<span class="fc" id="L76">        when(gameScreen.getDay()).thenReturn(currentGameDay);</span>
+<span class="fc" id="L77">        int hours = 2;</span>
+<span class="fc" id="L78">        int expectedEnergy = hours * eventManager.activityEnergies.get(&quot;studying&quot;);</span>
+<span class="fc" id="L79">        int expectedPassTime = hours * 60;</span>
+<span class="fc" id="L80">        eventManager.setHours(hours);</span>
+<span class="fc" id="L81">        gameScreen.daysStudied = new int[]{0,0,0,0,0,0,0};</span>
+<span class="fc" id="L82">        eventManager.event(&quot;catch_up-2&quot;);</span>
+<span class="fc" id="L83">        verify(gameScreen.dialogueBox).setText(String.format(&quot;You studied for %s hours!\nYou lost %d energy&quot;, hours, expectedEnergy));</span>
+
+<span class="fc" id="L85">        verify(gameScreen).decreaseEnergy(expectedEnergy);</span>
+<span class="fc" id="L86">        verify(gameScreen).addStudyHours(hours);</span>
+<span class="fc" id="L87">        assertEquals(hours, gameScreen.daysStudied[0]);</span>
+<span class="fc" id="L88">        assertFalse(gameScreen.catchUp);</span>
+<span class="fc" id="L89">        verify(gameScreen).passTime(expectedPassTime);</span>
+
+<span class="fc" id="L91">    }</span>
+
+    /**
+     * Tests if the player can interact with a tree.
+     * Verifies the dialogue displayed.
+     */
+
+    @Test
+    public void canInteractWithTree() {
+<span class="fc" id="L100">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L101">        eventManager.event(&quot;tree&quot;);</span>
+<span class="fc" id="L102">        verify(gameScreen.dialogueBox).hideSelectBox();</span>
+<span class="fc" id="L103">        verify(gameScreen.dialogueBox).setText(&quot;The tree doesn't say anything back.&quot;);</span>
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * Tests if the player can interact with a chest.
+     * Verifies the dialogue displayed.
+     */
+
+    @Test
+    public void canInteractWithChest() {
+<span class="fc" id="L113">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L114">        eventManager.event(&quot;chest&quot;);</span>
+<span class="fc" id="L115">        verify(gameScreen.dialogueBox).hideSelectBox();</span>
+<span class="fc" id="L116">        verify(gameScreen.dialogueBox).setText(&quot;Wow! This chest is full of so many magical items! I wonder how they will help you out on your journey! Boy, this is an awfully long piece of text, I wonder if someone is testing something?\n...\n...\n...\nHow cool!&quot;);</span>
+<span class="fc" id="L117">    }</span>
+
+    /**
+     * Tests if the player can meet friends at Piazza and talk about cats.
+     * Verifies the dialogue displayed and energy changes.
+     */
+
+    @Test
+    public void canMeetFriendsAtPiazzaAndTalkAboutCats() {
+<span class="fc" id="L126">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L127">        when(gameScreen.getSeconds()).thenReturn((float) (9*60));</span>
+<span class="fc" id="L128">        when(gameScreen.getEnergy()).thenReturn(50);</span>
+
+<span class="fc" id="L130">        eventManager.event(&quot;piazza-Cats&quot;);</span>
+<span class="fc" id="L131">        ArgumentCaptor&lt;String&gt; dialogueTextCaptor= ArgumentCaptor.forClass(String.class);</span>
+<span class="fc" id="L132">        verify(gameScreen.dialogueBox).setText(dialogueTextCaptor.capture());</span>
+<span class="fc" id="L133">        assertTrue(dialogueTextCaptor.getValue().contains(&quot;You talked about cats&quot;));</span>
+
+<span class="fc" id="L135">    }</span>
+
+    /**
+     * Tests if the player can study at the CompSci building.
+     * Verifies the effects on energy, study hours, and game state.
+     */
+
+    @Test
+    public void canStudyAtCompSciBuilding() {
+<span class="fc" id="L144">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L145">        when(gameScreen.getSeconds()).thenReturn((float) (9*60));</span>
+<span class="fc" id="L146">        when(gameScreen.getEnergy()).thenReturn(40);</span>
+<span class="fc" id="L147">        when(gameScreen.getDay()).thenReturn(1);</span>
+
+<span class="fc" id="L149">        gameScreen.daysStudied = new int[]{0, 0, 0, 0, 0, 0, 0};</span>
+
+<span class="fc" id="L151">        eventManager.event(&quot;comp_sci-2&quot;);</span>
+
+<span class="fc" id="L153">        verify(gameScreen.dialogueBox).setText(&quot;You studied for 2 hours!\nYou lost 20 energy&quot;);</span>
+<span class="fc" id="L154">        verify(gameScreen).decreaseEnergy(20);</span>
+<span class="fc" id="L155">        verify(gameScreen).addStudyHours(2);</span>
+<span class="fc" id="L156">        assertEquals(2, gameScreen.daysStudied[0]);</span>
+<span class="fc" id="L157">        verify(gameScreen).passTime(2 * 60);</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * Tests if the player can eat at the Ron Cooke Hub.
+     * Verifies the effects on energy and game state and dialogueBox text.
+     */
+
+    @Test
+    public void canEatAtRonCookeHub() {
+<span class="fc" id="L167">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L168">        when(gameScreen.getSeconds()).thenReturn((float) (9*60));</span>
+<span class="fc" id="L169">        when(gameScreen.getEnergy()).thenReturn(30);</span>
+<span class="fc" id="L170">        when(gameScreen.getMeal()).thenReturn(&quot;breakfast&quot;);</span>
+
+<span class="fc" id="L172">        eventManager.event(&quot;rch&quot;);</span>
+
+<span class="fc" id="L174">        verify(gameScreen.dialogueBox).setText(&quot;You took an hour to eat breakfast at the Ron Cooke Hub!\nYou lost 10 energy!&quot;);</span>
+<span class="fc" id="L175">        verify(gameScreen).decreaseEnergy(10);</span>
+<span class="fc" id="L176">        verify(gameScreen).passTime(60);</span>
+<span class="fc" id="L177">    }</span>
+
+    /**
+     * Tests if the player can go fishing.
+     * Verifies the effects on energy, recreational hours, and game state and dialogueBox text.
+     */
+
+    @Test
+    public void canGoFishing() {
+<span class="fc" id="L186">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L187">        when(gameScreen.getEnergy()).thenReturn(30);</span>
+
+<span class="fc" id="L189">        eventManager.event(&quot;fishing&quot;);</span>
+
+<span class="fc" id="L191">        verify(gameScreen.dialogueBox).setText(&quot;You caught a fish!&quot;);</span>
+<span class="fc" id="L192">        verify(gameScreen).decreaseEnergy(10);</span>
+<span class="fc" id="L193">        verify(gameScreen).passTime(60);</span>
+<span class="fc" id="L194">        verify(gameScreen).addRecreationalHours(1);</span>
+<span class="fc" id="L195">        assertEquals(1, GameScreen.fishCaught);</span>
+<span class="fc" id="L196">    }</span>
+
+    /**
+     * Tests if the player can feed ducks.
+     * Verifies the effects on dialogueBox text, energy, recreational hours, and game state.
+     */
+
+    @Test
+    public void canFeedDucks() {
+<span class="fc" id="L205">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L206">        when(gameScreen.getEnergy()).thenReturn(30);</span>
+
+<span class="fc" id="L208">        eventManager.event(&quot;ducks&quot;);</span>
+
+<span class="fc" id="L210">        verify(gameScreen.dialogueBox).setText(&quot;You fed the ducks!&quot;);</span>
+<span class="fc" id="L211">        verify(gameScreen).decreaseEnergy(10);</span>
+<span class="fc" id="L212">        verify(gameScreen).passTime(30);</span>
+<span class="fc" id="L213">        verify(gameScreen).addRecreationalHours(1);</span>
+<span class="fc" id="L214">        assertEquals(1, GameScreen.duckFeeds);</span>
+<span class="fc" id="L215">    }</span>
+
+    /**
+     * Tests if the player can go to sleep.
+     * Verifies the effects on game state.
+     */
+
+    @Test
+    public void canGoToSleep() {
+<span class="fc" id="L224">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L225">        when(gameScreen.getSeconds()).thenReturn((float) (7*60));</span>
+<span class="fc" id="L226">        when(gameScreen.getSleeping()).thenReturn(true);</span>
+<span class="fc" id="L227">        when(gameScreen.getWakeUpMessage()).thenReturn(&quot;Good morning!&quot;);</span>
+
+<span class="fc" id="L229">        eventManager.event(&quot;accommodation&quot;);</span>
+
+<span class="fc" id="L231">        verify(gameScreen).setSleeping(true);</span>
+<span class="fc" id="L232">        verify(gameScreen.dialogueBox).hide();</span>
+
+<span class="fc" id="L234">    }</span>
+
+    /**
+     * Tests if the player can interact with NPC1.
+     * Verifies the dialogue displayed.
+     */
+
+    @Test
+    public void canInteractWithNPC1() {
+<span class="fc" id="L243">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L244">        eventManager.event(&quot;NPC1&quot;);</span>
+<span class="fc" id="L245">        verify(gameScreen.dialogueBox).hideSelectBox();</span>
+<span class="fc" id="L246">        verify(gameScreen.dialogueBox).setText(&quot;Jerry: I dropped my phone in the lake...&quot;);</span>
+<span class="fc" id="L247">    }</span>
+
+    /**
+     * Tests if the player can interact with NPC2.
+     * Verifies the dialogue displayed.
+     */
+
+    @Test
+    public void canInteractWithNPC2() {
+<span class="fc" id="L256">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L257">        eventManager.event(&quot;NPC2&quot;);</span>
+<span class="fc" id="L258">        verify(gameScreen.dialogueBox).hideSelectBox();</span>
+<span class="fc" id="L259">        verify(gameScreen.dialogueBox).setText(&quot;Tilly: I'm too tired for this.&quot;);</span>
+<span class="fc" id="L260">    }</span>
+
+    /**
+     * Tests if piazza event returns a random time
+     */
+    @Test
+    public void piazzaRandomEnergy() {
+<span class="fc" id="L267">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L268">        when(gameScreen.getEnergy()).thenReturn(100);</span>
+<span class="fc" id="L269">        when(gameScreen.getSeconds()).thenReturn(600F);</span>
+
+<span class="fc" id="L271">        int i =0;</span>
+<span class="fc" id="L272">        boolean isEnergyRandom = false;</span>
+<span class="fc" id="L273">        ArrayList&lt;Integer&gt; hours = new ArrayList&lt;Integer&gt;() ;</span>
+<span class="pc bpc" id="L274" title="1 of 4 branches missed.">        while ((i&lt;10000 &amp;&amp; isEnergyRandom==false)) {</span>
+<span class="fc" id="L275">            eventManager.piazzaEvent(new String[]{&quot;a&quot;, &quot;b&quot;, &quot;c&quot;});</span>
+<span class="fc" id="L276">            hours.add(eventManager.hours);</span>
+<span class="fc bfc" id="L277" title="All 4 branches covered.">            if ((hours.size()&gt;2) &amp;&amp; (hours.get(hours.size()-1)!=hours.get(hours.size()-2))){</span>
+<span class="fc" id="L278">                isEnergyRandom=true;</span>
+            }
+<span class="fc" id="L280">            i += 1;</span>
+        }
+<span class="fc" id="L282">        assertTrue(isEnergyRandom);</span>
+<span class="fc" id="L283">    }</span>
+
+    /**
+     * Tests if player is told they are too tired to do an activity if their energy is too low
+     * Verifies displayed dialogue
+     */
+    @Test
+    public void attemptActivityTooTired(){
+<span class="fc" id="L291">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L292">        when(gameScreen.getEnergy()).thenReturn(0);</span>
+<span class="fc" id="L293">        when(gameScreen.getSeconds()).thenReturn((float) (9*60));</span>
+<span class="fc" id="L294">        eventManager.event(&quot;ducks&quot;);</span>
+<span class="fc" id="L295">        verify(gameScreen.dialogueBox).setText(&quot;You're too tired to feed the ducks right now!&quot;);</span>
+<span class="fc" id="L296">        eventManager.event(&quot;comp_sci&quot;);</span>
+<span class="fc" id="L297">        verify(gameScreen.dialogueBox).setText(&quot;You are too tired to study right now!&quot;);</span>
+<span class="fc" id="L298">        eventManager.event(&quot;piazza&quot;);</span>
+<span class="fc" id="L299">        verify(gameScreen.dialogueBox).setText(&quot;You are too tired to meet your friends right now!&quot;);</span>
+<span class="fc" id="L300">    }</span>
+    /**
+     * Tests if player is told it's the wrong time to do an activity
+     * Verifies the dialogue
+     */
+    @Test
+    public void attemptActivityTooLate(){
+<span class="fc" id="L307">        EventManager eventManager = new EventManager(gameScreen);</span>
+<span class="fc" id="L308">        when(gameScreen.getEnergy()).thenReturn(100);</span>
+<span class="fc" id="L309">        when(gameScreen.getSeconds()).thenReturn(0F);</span>
+<span class="fc" id="L310">        eventManager.event(&quot;piazza&quot;);</span>
+<span class="fc" id="L311">        verify(gameScreen.dialogueBox).setText(&quot;It's too early in the morning to meet your friends, go to bed!&quot;);</span>
+
+<span class="fc" id="L313">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

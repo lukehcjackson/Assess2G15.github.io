@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BonusPointsTests.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tests</a> &gt; <a href="index.source.html" class="el_package">com.skloch.domain</a> &gt; <span class="el_source">BonusPointsTests.java</span></div><h1>BonusPointsTests.java</h1><pre class="source lang-java linenums">package com.skloch.domain;
+import com.skloch.game.ScoreManager;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static org.junit.Assert.*;
+
+/**
+ * //NEW//-TEAM15-IMPLEMENTATION: class added version 1.1
+ * This class contains unit tests for the ScoreManager class
+ * It tests whether the correct bonuses are applied when performing eating and recreational activities
+ */
+<span class="fc" id="L15">public class BonusPointsTests {</span>
+    /**
+     * Checks for correct bonus points for combinations of eating
+     */
+    @Test
+    public void eatingGivesBonusScore(){
+        //Checks 3 breakfast
+<span class="fc" id="L22">        ScoreManager.dayEatScore[0] += 3;</span>
+<span class="fc" id="L23">        ScoreManager.updateEatScore();</span>
+<span class="fc" id="L24">        double badScore = ScoreManager.getTotalEatScore();</span>
+<span class="fc" id="L25">        ScoreManager.setTotalEatScore(0);</span>
+<span class="fc" id="L26">        ScoreManager.dayEatScore[0] += 1;</span>
+<span class="fc" id="L27">        ScoreManager.dayEatScore[1] += 1;</span>
+<span class="fc" id="L28">        ScoreManager.dayEatScore[2] += 1;</span>
+<span class="fc" id="L29">        ScoreManager.updateEatScore();</span>
+<span class="fc" id="L30">        double goodScore = ScoreManager.getTotalEatScore();</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">        Assert.assertTrue(badScore &lt; goodScore);</span>
+
+        //Checks 2 breakfast, 1 lunch
+<span class="fc" id="L34">        ScoreManager.setTotalEatScore(0);</span>
+<span class="fc" id="L35">        ScoreManager.dayEatScore[0] += 2;</span>
+<span class="fc" id="L36">        ScoreManager.dayEatScore[1] += 1;</span>
+<span class="fc" id="L37">        ScoreManager.updateEatScore();</span>
+<span class="fc" id="L38">        badScore = ScoreManager.getTotalEatScore();</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        Assert.assertTrue(badScore &lt; goodScore);</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * Checks for correct bonus points for combinations of recreational activities
+     */
+    @Test
+    public void recGivesBonusScore(){
+        //Checks 3 of same recreation
+<span class="fc" id="L48">        ScoreManager.dayRecreationScore[0] += 3;</span>
+<span class="fc" id="L49">        ScoreManager.updateRecreationScore();</span>
+<span class="fc" id="L50">        double badScore = ScoreManager.getTotalRecreationScore();</span>
+<span class="fc" id="L51">        ScoreManager.setTotalRecreationScore(0);</span>
+<span class="fc" id="L52">        ScoreManager.dayRecreationScore[0] += 1;</span>
+<span class="fc" id="L53">        ScoreManager.dayRecreationScore[1] += 1;</span>
+<span class="fc" id="L54">        ScoreManager.dayRecreationScore[2] += 1;</span>
+<span class="fc" id="L55">        ScoreManager.updateRecreationScore();</span>
+<span class="fc" id="L56">        double goodScore = ScoreManager.getTotalRecreationScore();</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        Assert.assertTrue(badScore &lt; goodScore);</span>
+
+
+        //Checks 2 of a recreation, 1 of another
+<span class="fc" id="L61">        ScoreManager.setTotalRecreationScore(0);</span>
+<span class="fc" id="L62">        ScoreManager.dayRecreationScore[0] += 2;</span>
+<span class="fc" id="L63">        ScoreManager.dayRecreationScore[1] += 1;</span>
+<span class="fc" id="L64">        ScoreManager.updateRecreationScore();</span>
+<span class="fc" id="L65">        badScore = ScoreManager.getTotalRecreationScore();</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        Assert.assertTrue(badScore &lt; goodScore);</span>
+<span class="fc" id="L67">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
